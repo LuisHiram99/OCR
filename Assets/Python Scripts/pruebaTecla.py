@@ -19,29 +19,34 @@ img1 = None
 img_cv1 = None
 
 def cnOCR(img_cv):
-    # Perform OCR using CnOcr
+    #Perform OCR using CnOcr
     ocr = CnOcr(det_model_name='en_PP-OCRv3_det', rec_model_name='en_PP-OCRv3')
     out = ocr.ocr(img_cv)
 
     quantity = None
     supplier_pn_value = None
+    texts = []
 
     # Extract relevant information from OCR output
     for index, item in enumerate(out):
-        if item['text'] == 'QUANTITY' and index + 2 < len(out):
-            quantity = out[index + 2]['text']
-        if item['text'] == 'SUPPLIER PN':
-            if index + 1 < len(out) and len(out[index + 1]['text']) > 5:
-                supplier_pn_value = out[index + 1]['text']
-            elif index + 2 < len(out):
-                supplier_pn_value = out[index + 2]['text']
+        texts.append(out[index]['text'])
 
+    for item in texts:
+        if not supplier_pn_value and item.endswith('-1') and item.replace("-","").isdigit():
+            supplier_pn_value = item
+        if not quantity and item.isdigit() and 230 < int(item) <=10000:
+            quantity = item
+
+    print(texts)
     print("-------------------------------------")
     print("quantity:", quantity)
     print("supplier-pn:", supplier_pn_value)
     print("-------------------------------------")
+    print("Press 'space' to take a screenshot and perform OCR. Press 'esc' to exit.")
+    
 
     return quantity, supplier_pn_value
+
 
 def take_screenshot():
     global first_capture, img1, img_cv1
