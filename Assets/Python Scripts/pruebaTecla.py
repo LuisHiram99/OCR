@@ -8,7 +8,7 @@ import UdpComms as U  # Assuming UdpComms is defined in module U
 np.seterr(all='ignore')
 
 # Define the area to capture
-x, y, width, height = 525, 250, 800, 700
+x, y, width, height = 130, 150, 1620, 850
 
 # Create UDP socket to use for sending (and receiving)
 sock = U.UdpComms(udpIP="127.0.0.1", portTX=8000, portRX=8001, enableRX=True, suppressWarnings=True)
@@ -70,8 +70,8 @@ def take_screenshot():
         img_cv2 = cv2.cvtColor(img_np2, cv2.COLOR_RGB2BGR)
         
         # Display the second screenshot
-        cv2.imshow("Second Screenshot", img_cv2)
-        cv2.waitKey(0)  # Wait for a key press to close the window
+        #cv2.imshow("Second Screenshot", img_cv2)
+        #cv2.waitKey(0)  # Wait for a key press to close the window
         
         # Perform OCR on both images
         text1 = cnOCR(img_cv1)
